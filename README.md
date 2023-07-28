@@ -1,6 +1,20 @@
-# skeleton-starter-hilla-react-gradle
+# poll-owner
+Poll owner is a companion application to poll that presents dashboards and features applicable to the various surveys it has run over time.
 
-This project can be used as a starting point to create your own Hilla application with React, Spring Boot, and Gradle.
+## Technologies Used
+
+1. React
+2. Vite
+3. Gradle
+4. Java
+5. Hilla (Vaadin Fusion)
+5. Spring Boot
+6. MongoDB
+7. Apex Charts
+8. GCP app engine (for production deployment)
+
+This project's structure is based off the skeleton-starter-hilla-react-gradle zip file that
+can be used as a starting point to create your own Hilla application with React, Spring Boot, and Gradle.
 It contains all the necessary configuration and some placeholder files to get you started.
 
 ## Running the application
@@ -9,7 +23,7 @@ The project is a standard Gradle Spring Boot project.
 To run it from the command line, type `gradlew bootRun` (Windows), or `./gradlew bootRun` (Mac & Linux), then open http://localhost:8080 in your browser.
 
 You can also import the project to your IDE of choice as you would with any Gradle project.
-Then you can run the main method of `Application.java`.
+Then you can run the main method of `OwnerApplication.java`.
 
 ## Deploying to Production
 
@@ -19,7 +33,7 @@ The file can be found in the `build/libs/` folder after the build completes.
 
 Once the JAR file is built, you can run it using:
 
-`java -jar build/libs/skeleton-starter-hilla-react-gradle.jar`
+`java -jar build/libs/poll-owner.jar`
 
 ## Project structure
 
@@ -42,7 +56,7 @@ source directory, contains the server-side Java views</td></tr>
   <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;<code>Application.java</code></td><td>Server entry-point</td></tr>
 </table>
 
-## Useful links
+## Useful Hilla Development links
 
 - Read the documentation at [hilla.dev/docs](https://hilla.dev/docs/).
 - Ask questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/hilla) or join our [Discord channel](https://discord.gg/MYFq5RTbBn).
