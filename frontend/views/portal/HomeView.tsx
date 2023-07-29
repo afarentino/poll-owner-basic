@@ -4,14 +4,14 @@ import { TextField } from '@hilla/react-components/TextField.js';
 import { HelloReactEndpoint } from 'Frontend/generated/endpoints.js';
 import { useState } from 'react';
 
-export default function HelloReactView() {
+export default function HomeView() {
   const [name, setName] = useState('');
 
   return (
     <>
       <section className="flex p-m gap-m items-end">
         <TextField
-          label="Your name"
+          label="User name"
           onValueChanged={(e) => {
             setName(e.detail.value);
           }}

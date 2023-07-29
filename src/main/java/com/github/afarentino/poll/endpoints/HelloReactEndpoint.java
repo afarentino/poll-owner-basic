@@ -1,4 +1,4 @@
-package com.github.afarentino.poll.endpoints.helloreact;
+package com.github.afarentino.poll.endpoints;
 
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import dev.hilla.Endpoint;
