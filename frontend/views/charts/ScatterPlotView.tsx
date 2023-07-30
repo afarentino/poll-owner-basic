@@ -1,5 +1,5 @@
 
-import Chart from 'react-apexcharts';
+import ReactApexChart from 'react-apexcharts';
 import ApexCharts from 'apexcharts';
 interface DataPoint {
     x: Date;
@@ -11,22 +11,22 @@ export default function ScatterPlotView() {
     const scatterData: DataPoint[] = [
         {
             x: new Date('2023-07-28T01:25:00'),
-            y: 20,
+            y: 1,
         },
         {
             x: new Date('2023-07-29T02:15:00'),
-            y: 35,
+            y: 2,
         },
         {
-            x: new Date('2023-07-30T00:00:00'),
-            y: 40,
+            x: new Date('2023-07-30T23:30:00'),
+            y: 23,
         },
         // Add more data points as needed
     ];
 
     const series = [
         {
-            name: "Scatter Plot",
+            name: "Time",
             data: scatterData
         }
     ];
@@ -46,11 +46,14 @@ export default function ScatterPlotView() {
         },
         yaxis: {
             title: {
-                text: 'Hour',
+                text: 'Time (24-hour format)',
             },
         },
         markers: {
-            size: 8,
+            size: 10,
+        },
+        dataLabels: {
+            enabled: false,
         },
         grid: {
             xaxis: {
@@ -67,8 +70,9 @@ export default function ScatterPlotView() {
     };
 
     return (
-    <div className="flex flex-col h-full items-center justify-center p-l text-center box-border">
-      <Chart options={options} series={series} type="scatter" height={350}/>
+    <div className="flex flex-col h-full items-start justify-start p-l text-center box-border">
+        <h2 className="text-l m-0" style={{ textAlign: 'center', margin: '10px'}}>Survey Submissions Scatter Plot</h2>
+        <ReactApexChart options={options} series={series} type="scatter" height={350}/>
     </div>
   );
 }

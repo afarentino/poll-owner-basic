@@ -26,6 +26,8 @@ repositories {
 
 dependencies {
 	implementation 'dev.hilla:hilla-react-spring-boot-starter'
+	// Add Spring Boot Starter Data MongoDB
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
