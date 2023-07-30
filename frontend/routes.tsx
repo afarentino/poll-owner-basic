@@ -1,9 +1,9 @@
-import HelloReactView from 'Frontend/views/helloreact/HelloReactView.js';
+import HomeView from 'Frontend/views/portal/HomeView.js';
 import MainLayout from 'Frontend/views/MainLayout.js';
 import { lazy } from 'react';
 import { createBrowserRouter, IndexRouteObject, NonIndexRouteObject, useMatches } from 'react-router-dom';
 
-const AboutView = lazy(async () => import('Frontend/views/about/AboutView.js'));
+const ScatterPlotView = lazy(async () => import('Frontend/views/charts/ScatterPlotView.js'));
 export type MenuProps = Readonly<{
   icon?: string;
   title?: string;
@@ -33,8 +33,8 @@ export const routes: readonly ViewRouteObject[] = [
     element: <MainLayout />,
     handle: { icon: 'null', title: 'Main' },
     children: [
-      { path: '/', element: <HelloReactView />, handle: { icon: 'globe-solid', title: 'Hello React' } },
-      { path: '/about', element: <AboutView />, handle: { icon: 'file', title: 'About' } },
+      { path: '/', element: <HomeView />, handle: { icon: 'globe-solid', title: 'Home' } },
+      { path: '/dashboard', element: <ScatterPlotView />, handle: { icon: 'file', title: 'Dashboard' } },
     ],
   },
 ];

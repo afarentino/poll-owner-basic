@@ -1,4 +1,4 @@
-package com.github.afarentino.poll.endpoints.helloreact;
+package com.github.afarentino.poll.endpoints;
 
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import dev.hilla.Endpoint;
@@ -6,14 +6,14 @@ import dev.hilla.Nonnull;
 
 @Endpoint
 @AnonymousAllowed
-public class HelloReactEndpoint {
+public class WelcomeEndpoint {
 
     @Nonnull
     public String sayHello(@Nonnull String name) {
         if (name.isEmpty()) {
-            return "Hello stranger";
+            return "Welcome back, owner";
         } else {
-            return "Hello " + name;
+            return "Welcome back, " + name;
         }
     }
 }

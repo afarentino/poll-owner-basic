@@ -36,7 +36,7 @@ Once the JAR file is built, you can run it using:
 `java -jar build/libs/poll-owner.jar`
 
 ## Project structure
-
+[gradlew.bat](gradlew.bat)
 <table style="width:100%; text-align: left;">
   <tr><th>Directory</th><th>Description</th></tr>
   <tr><td><code>frontend/</code></td><td>Client-side source directory</td></tr>

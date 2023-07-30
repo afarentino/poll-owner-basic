@@ -11,6 +11,10 @@ plugins {
 	id 'dev.hilla' version "$hillaVersion"
 }
 
+
+group = 'com.github.afarentino'
+sourceCompatibility = '17'
+
 repositories {
 	mavenCentral()
 	maven { setUrl("https://maven.vaadin.com/vaadin-prereleases") }
@@ -22,6 +26,8 @@ repositories {
 
 dependencies {
 	implementation 'dev.hilla:hilla-react-spring-boot-starter'
+	// Add Spring Boot Starter Data MongoDB
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
@@ -31,3 +37,7 @@ dependencyManagement {
 		mavenBom "dev.hilla:hilla-bom:$hillaVersion"
 	}
 }
+
+// Apply custom build tasks
+apply from: "$projectDir/gradle/custom.gradle"
+
