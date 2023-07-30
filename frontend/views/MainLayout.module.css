@@ -1,7 +1,6 @@
 vaadin-scroller[slot="drawer"] {
   flex: auto;
   padding: var(--lumo-space-s);
-  z-index: 100;
 }
 
 [slot="drawer"]:is(header, footer) {

@@ -1,7 +1,7 @@
 import { Button } from '@hilla/react-components/Button.js';
 import { Notification } from '@hilla/react-components/Notification.js';
 import { TextField } from '@hilla/react-components/TextField.js';
-import { HelloReactEndpoint } from 'Frontend/generated/endpoints.js';
+import { WelcomeEndpoint } from 'Frontend/generated/endpoints.js';
 import { useState } from 'react';
 
 export default function HomeView() {
@@ -17,12 +17,12 @@ export default function HomeView() {
           }}
         />
         <Button
-          onClick={async () => {
-            const serverResponse = await HelloReactEndpoint.sayHello(name);
+          onClick={async () => {  //TODO: Build out additional user features
+            const serverResponse = await WelcomeEndpoint.sayHello(name);
             Notification.show(serverResponse);
           }}
         >
-          Say hello
+          Set user
         </Button>
       </section>
     </>

@@ -52,3 +52,4 @@ tasks.register("generateAppYaml") {
         System.out.print("APP_MONGODB_CONN updated")
     }
 }
+
