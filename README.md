@@ -62,3 +62,8 @@ source directory, contains the server-side Java views</td></tr>
 - Ask questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/hilla) or join our [Discord channel](https://discord.gg/MYFq5RTbBn).
 - Report issues, create pull requests in [GitHub](https://github.com/vaadin/hilla).
 
+## License
+* [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)
+
+Copyright (c) 2023 Tony Castrogiovanni
+
