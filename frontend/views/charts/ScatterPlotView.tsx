@@ -126,9 +126,11 @@ export default function ScatterPlotView({start = "ALL", end = "ALL"}) {
     }
 
     return (
-        <div className="flex flex-col h-full items-start justify-start p-l text-center box-border">
+        <div className="flex flex-col h-full items-center justify-center p-l text-center box-border">
             <h2 className="text-l m-0" style={{ textAlign: 'center', margin: '10px'}}>Survey Submissions Scatter Plot</h2>
-            <ReactApexChart options={options} series={series} type="scatter" height={650} style={{}}/>
+            <div id="chart">
+                <ReactApexChart options={options} series={series} type="scatter" height={'350px'} width={'650px'} />
+            </div>
         </div>
     );
 }
