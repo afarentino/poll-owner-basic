@@ -11,7 +11,8 @@ interface DataPoint {
     y: number;
 }
 
-export default function ScatterPlotView() {
+export default function ScatterPlotView({start = "ALL", end = "ALL"}) {
+
     const [scatterData, setScatterData] = useState<DataPoint[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<boolean>(false);
@@ -19,7 +20,8 @@ export default function ScatterPlotView() {
     useEffect(() => {
         const fetchData = () => {
             async function getResults() {
-                const entries: Entry[] = await ResultsEndpoint.findAll();
+                const entries: Entry[] = (start === "ALL") ? await ResultsEndpoint.findAll() :
+                    await ResultsEndpoint.findBetween(start, end) ;
                 const data: DataPoint[] = [];
                 entries.forEach((entry) => {
                     // Split the date and time parts of the entries timestamp
@@ -52,7 +54,8 @@ export default function ScatterPlotView() {
 
                     const dataPoint: DataPoint = new Object() as DataPoint;
                     dataPoint.x = dateObject;
-                    dataPoint.y = (minutes > 30) ? hours + 1 : hours; // round up time is closer to next hour
+                    dataPoint.y = hours; //Minutes are always truncated as we are tracking actual hourly increments
+                    // freq
                     data.push(dataPoint);
                 });
                 return data;
@@ -125,7 +128,7 @@ export default function ScatterPlotView() {
     return (
         <div className="flex flex-col h-full items-start justify-start p-l text-center box-border">
             <h2 className="text-l m-0" style={{ textAlign: 'center', margin: '10px'}}>Survey Submissions Scatter Plot</h2>
-            <ReactApexChart options={options} series={series} type="scatter" height={350}/>
+            <ReactApexChart options={options} series={series} type="scatter" height={650} style={{}}/>
         </div>
     );
 }
