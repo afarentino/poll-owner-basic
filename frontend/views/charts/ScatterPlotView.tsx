@@ -90,7 +90,7 @@ export default function ScatterPlotView({start = "ALL", end = "ALL"}) {
                 // 1 - A Map of hours -> DataPoint[]
                 // 2 - A Map of hours -> their Frequency
                 //
-                // In the steps that follow, when we create the seriesMap of Freq -> DataPoint[] we will JOIN (concat)
+                // In the steps that follow, when we create the seriesMap of Freq -> Series we will JOIN (concat)
                 // the underlying hourly DataPoint arrays when they have matching frequencies.
                 const seriesMap: Map<number, Series> = new Map();
 
