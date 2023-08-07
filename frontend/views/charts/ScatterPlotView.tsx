@@ -4,23 +4,33 @@ import React, { useState, useEffect } from 'react';
 import Entry from 'Frontend/generated/com/github/afarentino/poll/Entry';
 import { ResultsEndpoint } from 'Frontend/generated/endpoints';
 import ReactApexChart from 'react-apexcharts';
-import ApexCharts from 'apexcharts';
+import ApexCharts, {ApexOptions} from 'apexcharts';
 
 interface DataPoint {
     x: Date;
     y: number;
+    freq: number;
 }
 
-export default function ScatterPlotView() {
-    const [scatterData, setScatterData] = useState<DataPoint[]>([]);
+interface Series {
+    name: string;        // label used to Represent Frequency
+    data: DataPoint[];   // All hourly DataPoints matching it (joined)
+}
+
+
+export default function ScatterPlotView({start = "ALL", end = "ALL"}) {
+
+    const [series, setSeries] = useState<Array<Series>>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<boolean>(false);
 
     useEffect(() => {
         const fetchData = () => {
             async function getResults() {
-                const entries: Entry[] = await ResultsEndpoint.findAll();
-                const data: DataPoint[] = [];
+                const entries: Entry[] = (start === "ALL") ? await ResultsEndpoint.findAll() :
+                    await ResultsEndpoint.findBetween(start, end) ;
+                const hourlyMap: Map<number, DataPoint[]> = new Map<0, []>;
+                const freqTracker: Map<number, number> = new Map();
                 entries.forEach((entry) => {
                     // Split the date and time parts of the entries timestamp
                     if (entry.timeStamp === undefined) {
@@ -30,12 +40,14 @@ export default function ScatterPlotView() {
 
                     // Split the date into month, day, and year
                     const [monthStr, dayStr, yearStr] = datePart.split('/');
+
                     let month :number = parseInt(monthStr, 10);
                     let day :number = parseInt(dayStr, 10);
                     let year :number = parseInt(yearStr, 10);
 
                     // Split the time into hours, minutes, seconds, and AM/PM
                     const [hourStr, minStr, secStr] = timePart.split(':');
+
                     let hours :number = parseInt(hourStr, 10);
                     let minutes :number = parseInt(minStr, 10);
                     let seconds :number = parseInt(secStr, 10);
@@ -52,14 +64,64 @@ export default function ScatterPlotView() {
 
                     const dataPoint: DataPoint = new Object() as DataPoint;
                     dataPoint.x = dateObject;
-                    dataPoint.y = (minutes > 30) ? hours + 1 : hours; // round up time is closer to next hour
-                    data.push(dataPoint);
+                    dataPoint.y = hours; // Minutes are always truncated as we are tracking actual hourly increments
+
+                    // Hourly Map collections
+                    if ( hourlyMap.has(hours) ) {
+                        let data: DataPoint[] = hourlyMap.get(hours) as DataPoint[];
+                        data.push(dataPoint);
+                        hourlyMap.set(hours, data);
+                    } else {
+                        let data: DataPoint[] = [dataPoint];
+                        hourlyMap.set(hours, data);
+                    }
+
+                    if (freqTracker.has(hours)) {
+                        let freq :number = freqTracker.get(hours) as number;
+                        freq++;  // increment freq
+                        freqTracker.set(hours, freq);
+                    } else {
+                        freqTracker.set(hours, 1); // this is our first time seeing it.
+                    }
                 });
-                return data;
+
+                // At this point we've looped through the entire entries list and created 2 intermediate
+                // Data Structures that we use to construct the Frequency Time Series
+                // 1 - A Map of hours -> DataPoint[]
+                // 2 - A Map of hours -> their Frequency
+                //
+                // In the steps that follow, when we create the seriesMap of Freq -> Series we will JOIN (concat)
+                // the underlying hourly DataPoint arrays when they have matching frequencies.
+                const seriesMap: Map<number, Series> = new Map();
+
+                hourlyMap.forEach((value, hour) => {
+
+                    if (value.length > 0) {
+                        let freq: number = freqTracker.get(hour) as number
+
+                        if ( seriesMap.has(freq) ) {
+                            let series: Series = seriesMap.get(freq) as Series;
+                            series.data = series.data.concat(value);  // JOIN the DataPoints
+                            seriesMap.set(freq, series);
+                        } else { // create a new Frequency Time Series
+                            let series: Series = new Object as Series;
+                            series.name = `FREQUENCY ${freq}`;
+                            series.data = value;
+                            seriesMap.set(freq, series);
+                        }
+                    }
+                });
+                return seriesMap;
             }
+
             getResults().then(
-                function(surveyData) {
-                    setScatterData(surveyData);
+                function(map) {
+                    // Flatten the map to a chart series and return it
+                    let seriesList: Array<Series>  = [];
+                    for (const series of map.values()) {
+                        seriesList = seriesList.concat(series);
+                    }
+                    setSeries(seriesList);
                     setLoading(false);
                 },
                 function(error) {
@@ -71,16 +133,9 @@ export default function ScatterPlotView() {
         fetchData();
     }, []);
 
-    const series = [
-        {
-            name: "Hour",
-            data: scatterData
-        }
-    ];
-
     const options: ApexCharts.ApexOptions = {
         chart: {
-            id: 'scatter-plot',
+            id: 'react-plot',
             zoom: {
                 type: 'xy', // Enable xy zoom
             },
@@ -96,6 +151,7 @@ export default function ScatterPlotView() {
                 text: 'Hour (24-hour format)',
             },
         },
+
         dataLabels: {
             enabled: false,
         },
@@ -123,9 +179,11 @@ export default function ScatterPlotView() {
     }
 
     return (
-        <div className="flex flex-col h-full items-start justify-start p-l text-center box-border">
+        <div className="flex flex-col h-full items-center justify-center p-l text-center box-border">
             <h2 className="text-l m-0" style={{ textAlign: 'center', margin: '10px'}}>Survey Submissions Scatter Plot</h2>
-            <ReactApexChart options={options} series={series} type="scatter" height={350}/>
+            <div id="chart">
+                <ReactApexChart options={options} series={series} type="scatter" height={350} width={650} />
+            </div>
         </div>
     );
 }

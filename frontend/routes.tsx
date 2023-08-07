@@ -34,7 +34,7 @@ export const routes: readonly ViewRouteObject[] = [
     handle: { icon: 'null', title: 'Main' },
     children: [
       { path: '/', element: <HomeView />, handle: { icon: 'globe-solid', title: 'Home' } },
-      { path: '/dashboard', element: <ScatterPlotView />, handle: { icon: 'file', title: 'Dashboard' } },
+      { path: '/dashboard', element: <ScatterPlotView start={"07/01/2023"} end={"08/01/2023"}/>, handle: { icon: 'file', title: 'Dashboard' } },
     ],
   },
 ];
